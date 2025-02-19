@@ -1,40 +1,128 @@
 #include <stdio.h>
 
-// Desafio Batalha Naval - MateCheck
-// Este código inicial serve como base para o desenvolvimento do sistema de Batalha Naval.
-// Siga os comentários para implementar cada parte do desafio.
+#define TABULEIRO_TAMANHO 10
+#define HABILIDADE_TAMANHO 5
+
+// Função para exibir o tabuleiro
+void exibirTabuleiro(int tabuleiro[TABULEIRO_TAMANHO][TABULEIRO_TAMANHO]) {
+    for (int i = 0; i < TABULEIRO_TAMANHO; i++) {
+        for (int j = 0; j < TABULEIRO_TAMANHO; j++) {
+            if (tabuleiro[i][j] == 0) {
+                printf(" ~ "); // Água
+            } else if (tabuleiro[i][j] == 3) {
+                printf(" # "); // Navio
+            } else if (tabuleiro[i][j] == 5) {
+                printf(" * "); // Área afetada pela habilidade
+            }
+        }
+        printf("\n");
+    }
+}
+
+// Função para aplicar a matriz de habilidade ao tabuleiro
+void aplicarHabilidade(int tabuleiro[TABULEIRO_TAMANHO][TABULEIRO_TAMANHO], int habilidade[HABILIDADE_TAMANHO][HABILIDADE_TAMANHO], int origemLinha, int origemColuna) {
+    int offset = HABILIDADE_TAMANHO / 2;
+    for (int i = 0; i < HABILIDADE_TAMANHO; i++) {
+        for (int j = 0; j < HABILIDADE_TAMANHO; j++) {
+            int tabuleiroLinha = origemLinha + i - offset;
+            int tabuleiroColuna = origemColuna + j - offset;
+            if (tabuleiroLinha >= 0 && tabuleiroLinha < TABULEIRO_TAMANHO && tabuleiroColuna >= 0 && tabuleiroColuna < TABULEIRO_TAMANHO) {
+                if (habilidade[i][j] == 1) {
+                    tabuleiro[tabuleiroLinha][tabuleiroColuna] = 5;
+                }
+            }
+        }
+    }
+}
+
+// Função para criar a matriz de habilidade em forma de cone
+void criarHabilidadeCone(int habilidade[HABILIDADE_TAMANHO][HABILIDADE_TAMANHO]) {
+    for (int i = 0; i < HABILIDADE_TAMANHO; i++) {
+        for (int j = 0; j < HABILIDADE_TAMANHO; j++) {
+            habilidade[i][j] = 0;
+        }
+    }
+    habilidade[0][2] = 1;
+    habilidade[1][1] = 1;
+    habilidade[1][2] = 1;
+    habilidade[1][3] = 1;
+    habilidade[2][0] = 1;
+    habilidade[2][1] = 1;
+    habilidade[2][2] = 1;
+    habilidade[2][3] = 1;
+    habilidade[2][4] = 1;
+}
+
+// Função para criar a matriz de habilidade em forma de cruz
+void criarHabilidadeCruz(int habilidade[HABILIDADE_TAMANHO][HABILIDADE_TAMANHO]) {
+    for (int i = 0; i < HABILIDADE_TAMANHO; i++) {
+        for (int j = 0; j < HABILIDADE_TAMANHO; j++) {
+            habilidade[i][j] = 0;
+        }
+    }
+    habilidade[0][2] = 1;
+    habilidade[1][2] = 1;
+    habilidade[2][0] = 1;
+    habilidade[2][1] = 1;
+    habilidade[2][2] = 1;
+    habilidade[2][3] = 1;
+    habilidade[2][4] = 1;
+    habilidade[3][2] = 1;
+    habilidade[4][2] = 1;
+}
+
+// Função para criar a matriz de habilidade em forma de octaedro
+void criarHabilidadeOctaedro(int habilidade[HABILIDADE_TAMANHO][HABILIDADE_TAMANHO]) {
+    for (int i = 0; i < HABILIDADE_TAMANHO; i++) {
+        for (int j = 0; j < HABILIDADE_TAMANHO; j++) {
+            habilidade[i][j] = 0;
+        }
+    }
+    habilidade[0][2] = 1;
+    habilidade[1][1] = 1;
+    habilidade[1][2] = 1;
+    habilidade[1][3] = 1;
+    habilidade[2][0] = 1;
+    habilidade[2][1] = 1;
+    habilidade[2][2] = 1;
+    habilidade[2][3] = 1;
+    habilidade[2][4] = 1;
+    habilidade[3][1] = 1;
+    habilidade[3][2] = 1;
+    habilidade[3][3] = 1;
+    habilidade[4][2] = 1;
+}
 
 int main() {
-    // Nível Novato - Posicionamento dos Navios
-    // Sugestão: Declare uma matriz bidimensional para representar o tabuleiro (Ex: int tabuleiro[5][5];).
-    // Sugestão: Posicione dois navios no tabuleiro, um verticalmente e outro horizontalmente.
-    // Sugestão: Utilize `printf` para exibir as coordenadas de cada parte dos navios.
+    // Inicializar o tabuleiro com água (0) e alguns navios (3)
+    int tabuleiro[TABULEIRO_TAMANHO][TABULEIRO_TAMANHO] = {0};
+    tabuleiro[2][2] = 3;
+    tabuleiro[2][3] = 3;
+    tabuleiro[2][4] = 3;
+    tabuleiro[3][2] = 3;
+    tabuleiro[4][2] = 3;
 
-    // Nível Aventureiro - Expansão do Tabuleiro e Posicionamento Diagonal
-    // Sugestão: Expanda o tabuleiro para uma matriz 10x10.
-    // Sugestão: Posicione quatro navios no tabuleiro, incluindo dois na diagonal.
-    // Sugestão: Exiba o tabuleiro completo no console, mostrando 0 para posições vazias e 3 para posições ocupadas.
+    // Criar as matrizes de habilidades
+    int habilidadeCone[HABILIDADE_TAMANHO][HABILIDADE_TAMANHO];
+    int habilidadeCruz[HABILIDADE_TAMANHO][HABILIDADE_TAMANHO];
+    int habilidadeOctaedro[HABILIDADE_TAMANHO][HABILIDADE_TAMANHO];
 
-    // Nível Mestre - Habilidades Especiais com Matrizes
-    // Sugestão: Crie matrizes para representar habilidades especiais como cone, cruz, e octaedro.
-    // Sugestão: Utilize estruturas de repetição aninhadas para preencher as áreas afetadas por essas habilidades no tabuleiro.
-    // Sugestão: Exiba o tabuleiro com as áreas afetadas, utilizando 0 para áreas não afetadas e 1 para áreas atingidas.
+    criarHabilidadeCone(habilidadeCone);
+    criarHabilidadeCruz(habilidadeCruz);
+    criarHabilidadeOctaedro(habilidadeOctaedro);
 
-    // Exemplos de exibição das habilidades:
-    // Exemplo para habilidade em cone:
-    // 0 0 1 0 0
-    // 0 1 1 1 0
-    // 1 1 1 1 1
-    
-    // Exemplo para habilidade em octaedro:
-    // 0 0 1 0 0
-    // 0 1 1 1 0
-    // 0 0 1 0 0
+    // Definir pontos de origem para as habilidades
+    int origemConeLinha = 5, origemConeColuna = 5;
+    int origemCruzLinha = 2, origemCruzColuna = 7;
+    int origemOctaedroLinha = 7, origemOctaedroColuna = 2;
 
-    // Exemplo para habilidade em cruz:
-    // 0 0 1 0 0
-    // 1 1 1 1 1
-    // 0 0 1 0 0
+    // Aplicar habilidades ao tabuleiro
+    aplicarHabilidade(tabuleiro, habilidadeCone, origemConeLinha, origemConeColuna);
+    aplicarHabilidade(tabuleiro, habilidadeCruz, origemCruzLinha, origemCruzColuna);
+    aplicarHabilidade(tabuleiro, habilidadeOctaedro, origemOctaedroLinha, origemOctaedroColuna);
+
+    // Exibir o tabuleiro com as áreas afetadas
+    exibirTabuleiro(tabuleiro);
 
     return 0;
 }
